@@ -8,16 +8,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Ej6_SistemaPeaje
+namespace Ej7_Infracciones_2_1_c
 {
-    public partial class Form1 : Form
+    public partial class FormInicioSistema : Form
     {
-        public Form1()
+        public FormInicioSistema()
         {
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void btnIniciarSistema_Click(object sender, EventArgs e)
         {
 
         }

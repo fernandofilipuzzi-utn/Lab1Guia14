@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Ej7_Infracciones_2_1_c
 {
-    public partial class Form1 : Form
+    public partial class FormAltaInfraccion : Form
     {
-        public Form1()
+        public FormAltaInfraccion()
         {
             InitializeComponent();
         }
