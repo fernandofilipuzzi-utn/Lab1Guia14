@@ -17,8 +17,6 @@ namespace Ej8_radar
         public FormPrincipal()
         {
             InitializeComponent();
-
-            
         }
 
         private void FormPrincipal_Load(object sender, EventArgs e)
@@ -35,17 +33,15 @@ namespace Ej8_radar
 
         private void btnAgregarVehiculo_Click(object sender, EventArgs e)
         {
-            string patente = tbPatente.Text;
-            double velocidad = Convert.ToDouble(tbVelocidad.Text);
-            bool esOficial = rbEsOficial.Checked;
-            control.AgregarControl(patente, velocidad, esOficial);
+            FormControl fControl = new FormControl();
 
-            #region limpieza de controles
-            tbPatente.Clear();
-            tbVelocidad.Clear();
-            rbEsOficial.Checked = false;
-            rbEsCivil.Checked = false;
-            #endregion
+            if (fControl.ShowDialog() == DialogResult.OK)
+            {
+                string patente = fControl.tbPatente.Text;
+                double velocidad = Convert.ToDouble(fControl.tbVelocidad.Text);
+                bool esOficial = fControl.rbEsOficial.Checked;
+                control.AgregarControl(patente, velocidad, esOficial);
+            }
         }
 
         private void btnBuscarInfractor_Click(object sender, EventArgs e)
@@ -69,7 +65,6 @@ namespace Ej8_radar
 
             for(int n=0;n<control.CantidadVehiculo;n++)
                 lbtInforme.Items.Add($"{control.VerVehiculosInfractores(n).Patente}");
-        }
-        
+        }        
     }
 }
