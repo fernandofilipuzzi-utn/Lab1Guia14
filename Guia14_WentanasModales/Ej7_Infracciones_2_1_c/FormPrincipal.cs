@@ -53,7 +53,7 @@ namespace Ej7_Infracciones_2_1_c
             do{
                 result = fInfraccion.ShowDialog();
 
-                #region alta acta
+                #region caso 1: alta acta
                 if (result == DialogResult.Yes)
                 {
                     #region levantando datos de la ventana
@@ -80,7 +80,7 @@ namespace Ej7_Infracciones_2_1_c
                 }
                 #endregion
 
-                #region agregando infracciones
+                #region caso 2: agregando infracciones
                 if (result == DialogResult.Retry)
                 {
                     if (fInfraccion.cbmInfracciones.SelectedIndex != -1)
@@ -98,6 +98,7 @@ namespace Ej7_Infracciones_2_1_c
                     }
                 }
                 #endregion
+
             } while (result == DialogResult.Retry || result == DialogResult.Yes);
 
             #region cerrando y agregando el acta
