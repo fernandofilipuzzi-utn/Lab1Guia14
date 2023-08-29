@@ -22,70 +22,69 @@ namespace Ej3_Concesionaria_2_2
 
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
-            gbRegistro.Enabled = false;
-            gbInforme.Enabled = false;
-        }
+            FormDatoInicio fDato = new FormDatoInicio();
+            if (fDato.ShowDialog() == DialogResult.OK)
+            {
+                int añoActual = Convert.ToInt32(fDato.tbAñoActual.Text);
+                c = new Concesionaria(añoActual);
 
-        private void btnInicio_Click(object sender, EventArgs e)
-        {
-            int añoActual = Convert.ToInt32(tbAñoActual.Text);
-            c = new Concesionaria(añoActual);
-
-            #region controlando el flujo de carga de datos
-            gbInicio.Enabled = false;
-            gbRegistro.Enabled = true;
-            gbAltaEmbarque.Enabled = true;
-            gbInforme.Enabled = true;
-            #endregion
+                #region controlando el flujo de carga de datos
+                gbInforme.Enabled = true;
+                #endregion
+            }
+            else
+            {
+                Close();
+            }
+            fDato.Dispose();
         }
 
         private void btnIniciarEmbarque_Click(object sender, EventArgs e)
         {
-            int numeroEmbarque = Convert.ToInt32(tbNroEmbarque.Text);
-            nuevo = new Embarque(numeroEmbarque, 
-                                  c.PorcentajeDepreciacion,
-                                  c.AñoActual);
+            FormDatosEmbarque fDatos = new FormDatosEmbarque();
 
-            #region controlando el flujo de carga de datos
-            gbVehiculo.Enabled = true;
-            gbAltaEmbarque.Enabled = false;
-            gbVehiculo.Enabled = true;
-            #endregion
-        }
+            fDatos.ShowDialog();
 
-        private void btnIngresarVehiculo_Click(object sender, EventArgs e)
-        {
-            int añoFabricacion = Convert.ToInt32(tbAñoFabricacion.Text);
-            double montoFabricacion = Convert.ToDouble(tbMontoFabricacion.Text);
+            while (fDatos.DialogResult != DialogResult.OK && fDatos.DialogResult != DialogResult.Cancel)
+            {
+                //similar a la lógica del menu de consola, voy viend que botón accionó
 
-            nuevo.RegistrarMoto(añoFabricacion, montoFabricacion);
+                if (fDatos.DialogResult == DialogResult.Yes)
+                {
+                    #region alta embarque
+                    int numeroEmbarque = Convert.ToInt32(fDatos.tbNroEmbarque.Text);
+                    nuevo = new Embarque(numeroEmbarque,
+                                          c.PorcentajeDepreciacion,
+                                          c.AñoActual);
+                    #endregion
+                }
+                else if (fDatos.DialogResult == DialogResult.Retry)
+                {
+                    #region descarga de las motos del embarque
+                    int añoFabricacion = Convert.ToInt32(fDatos.tbAñoFabricacion.Text);
+                    double montoFabricacion = Convert.ToDouble(fDatos.tbMontoFabricacion.Text);
 
-            #region controlando el flujo de carga de datos
-            tbAñoFabricacion.Clear();
-            tbMontoFabricacion.Clear();
-            #endregion
-        }
+                    nuevo.RegistrarMoto(añoFabricacion, montoFabricacion);
 
-        private void btnIngresarEmbarque_Click(object sender, EventArgs e)
-        {
-            c.IngresarEmbarque(nuevo);
+                    fDatos.tbAñoFabricacion.Clear();
+                    fDatos.tbMontoFabricacion.Clear();
+                    #endregion
+                }
 
-            MessageBox.Show("Embarque ingresado!.");
+                fDatos.ShowDialog();
+            }
 
-            #region controlando el flujo de carga de datos
-            gbAltaEmbarque.Enabled = true;
-            tbNroEmbarque.Clear();
-            gbVehiculo.Enabled = false;
-            #endregion
-        }
+            #region completando el registro
+            if (fDatos.DialogResult == DialogResult.OK)
+            {
+                c.IngresarEmbarque(nuevo);
 
-        private void btnRechazarEmbarque_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Embarque dechazado.");
-
-            #region controlando el flujo de carga de datos
-            gbAltaEmbarque.Enabled = true;
-            tbNroEmbarque.Clear();
+                MessageBox.Show("Embarque ingresado!.");
+            }
+            else
+            {
+                MessageBox.Show("Proceso de ingreso del embarque cancelado.");
+            }
             #endregion
         }
 
